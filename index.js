@@ -1,8 +1,7 @@
-const products = [
-	{id: 1, title: 'title1', description: 'description1', favorite: false},
-	{id: 2, title: 'title2', description: 'description2', favorite: false},
-	{id: 3, title: 'title3', description: 'description3', favorite: false},
-]
+
+
+import products from './mock.js'
+
 const button = document.querySelector('#addButton')
 const prodUl = document.querySelector('#products')
 const inputTitle = document.querySelector('#title')
@@ -11,7 +10,6 @@ const inputDescription = document.querySelector('#description')
 function createUl(items, container) {
 	items.forEach(product => {
 		const newUl = document.createElement("ul")
-		newUl.id = "ulId"
 		const newLiTitle = document.createElement("li")
 		const btnDelete = document.createElement("button")
 		const btnBool = document.createElement("button")
@@ -23,7 +21,7 @@ function createUl(items, container) {
 		
 		btnBool.textContent = 'Add to favorite'
 		btnDelete.textContent = 'Delete'
-				
+		
 		container.appendChild(newUl)
 		newUl.appendChild(newLiTitle)
 		newUl.appendChild(btnBool)
@@ -32,6 +30,7 @@ function createUl(items, container) {
 		btnBool.onclick = function () {
 			const favBool = product.favorite === false ? product.favorite = true : product.favorite = false
 			newLiTitle.textContent = `${product.title}, ${product.description}, ${product.favorite = favBool}`
+			product.favorite === true ? btnBool.textContent = 'Remove from favorite' : btnBool.textContent = 'Add to favorite'
 			newLiTitle.appendChild(btnDelete)
 		}
 
@@ -47,7 +46,6 @@ function add(items, product, container) {
 	items.push(product)
 		
 	const newUl = document.createElement("ul")
-	newUl.id = "ulId"
 	const newLiTitle = document.createElement("li")
 	const btnBool = document.createElement("button")
 	const btnDelete = document.createElement("button")
@@ -67,6 +65,7 @@ function add(items, product, container) {
 	btnBool.onclick = function () {
 		const favBool = product.favorite === false ? product.favorite = true : product.favorite = false
 		newLiTitle.textContent = `${product.title}, ${product.description}, ${product.favorite = favBool}`
+		product.favorite === true ? btnBool.textContent = 'Remove from favorite' : btnBool.textContent = 'Add to favorite'
 		newLiTitle.appendChild(btnDelete)
 	}
 
