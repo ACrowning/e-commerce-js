@@ -1,5 +1,3 @@
-
-
 import products from './mock.js'
 
 const button = document.querySelector('#addButton')
@@ -7,16 +5,30 @@ const prodUl = document.querySelector('#products')
 const inputTitle = document.querySelector('#title')
 const inputDescription = document.querySelector('#description')
 
+function btnUpdateBool(product, under, bool) {
+	const favBool = product.favorite === false ? product.favorite = true : product.favorite = false
+	under.textContent = `${product.title}, ${product.description}, ${product.favorite = favBool}`
+	product.favorite === true ? bool.textContent = 'Remove from favorite' : bool.textContent = 'Add to favorite'
+}
+
+function btnUpdateDel(ul, items, product) {
+	ul.remove()
+	const ind = items.indexOf(product)
+	items.splice(ind, 1)
+}
+
+
 function createUl(items, container) {
 	items.forEach(product => {
 		const newUl = document.createElement("ul")
 		const newLiTitle = document.createElement("li")
+		const underLi = document.createElement("span")
 		const btnDelete = document.createElement("button")
 		const btnBool = document.createElement("button")
 		
 		newUl.textContent = 
 		`${product.id}`
-		newLiTitle.textContent = 
+		underLi.textContent = 
 		`${product.title}, ${product.description}, ${product.favorite}`
 		
 		btnBool.textContent = 'Add to favorite'
@@ -25,19 +37,15 @@ function createUl(items, container) {
 		container.appendChild(newUl)
 		newUl.appendChild(newLiTitle)
 		newUl.appendChild(btnBool)
+		newLiTitle.appendChild(underLi)
 		newLiTitle.appendChild(btnDelete)
 
 		btnBool.onclick = function () {
-			const favBool = product.favorite === false ? product.favorite = true : product.favorite = false
-			newLiTitle.textContent = `${product.title}, ${product.description}, ${product.favorite = favBool}`
-			product.favorite === true ? btnBool.textContent = 'Remove from favorite' : btnBool.textContent = 'Add to favorite'
-			newLiTitle.appendChild(btnDelete)
+			btnUpdateBool(product, underLi, btnBool)
 		}
 
 		btnDelete.onclick = function () {
-			newUl.remove()
-			const ind = items.indexOf(product)
-			items.splice(ind, 1)
+			btnUpdateDel(newUl, items, product)
 		}
 	})
 }
@@ -47,32 +55,30 @@ function add(items, product, container) {
 		
 	const newUl = document.createElement("ul")
 	const newLiTitle = document.createElement("li")
+	const underLi = document.createElement("span")
 	const btnBool = document.createElement("button")
 	const btnDelete = document.createElement("button")
 	
 	newUl.textContent = 
 	`${product.id}`
-	newLiTitle.textContent = 
+	underLi.textContent = 
 	`${product.title}, ${product.description}, ${product.favorite}`
+
 	btnBool.textContent = 'Add to favorite'
 	btnDelete.textContent = 'Delete'
 			
 	container.appendChild(newUl)
 	newUl.appendChild(newLiTitle)
 	newUl.appendChild(btnBool)
+	newLiTitle.appendChild(underLi)
 	newLiTitle.appendChild(btnDelete)
 
 	btnBool.onclick = function () {
-		const favBool = product.favorite === false ? product.favorite = true : product.favorite = false
-		newLiTitle.textContent = `${product.title}, ${product.description}, ${product.favorite = favBool}`
-		product.favorite === true ? btnBool.textContent = 'Remove from favorite' : btnBool.textContent = 'Add to favorite'
-		newLiTitle.appendChild(btnDelete)
+		btnUpdateBool(product, underLi, btnBool)
 	}
 
 	btnDelete.onclick = function () {
-		newUl.remove()
-		const ind = items.indexOf(product)
-		items.splice(ind, 1)
+		btnUpdateDel(newUl, items, product)
 	}
 }
 
