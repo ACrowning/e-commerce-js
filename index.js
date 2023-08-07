@@ -21,10 +21,17 @@ function btnUpdateDel(ul, items, product) {
 function createUl(items, container) {
 	items.forEach(product => {
 		const newUl = document.createElement("ul")
+		newUl.id = "product"
+		const image = document.createElement("img")
+		image.id = "image"
 		const newLiTitle = document.createElement("li")
-		const underLi = document.createElement("span")
+		newLiTitle.id = "titleLi"
+		const underLi = document.createElement("div")
 		const btnDelete = document.createElement("button")
 		const btnBool = document.createElement("button")
+
+		image.src = "https://picsum.photos/200/300?random"
+		image.title = "https://picsum.photos/200/300?random"
 		
 		newUl.textContent = 
 		`${product.id}`
@@ -33,9 +40,10 @@ function createUl(items, container) {
 		
 		btnBool.textContent = 'Add to favorite'
 		btnDelete.textContent = 'Delete'
-		
+
 		container.appendChild(newUl)
 		newUl.appendChild(newLiTitle)
+		newLiTitle.appendChild(image)
 		newUl.appendChild(btnBool)
 		newLiTitle.appendChild(underLi)
 		newLiTitle.appendChild(btnDelete)
@@ -54,10 +62,15 @@ function add(items, product, container) {
 	items.push(product)
 		
 	const newUl = document.createElement("ul")
+	newUl.id = "product"
+	const image = document.createElement("img")
+	image.id = "image"
 	const newLiTitle = document.createElement("li")
-	const underLi = document.createElement("span")
+	const underLi = document.createElement("div")
 	const btnBool = document.createElement("button")
 	const btnDelete = document.createElement("button")
+
+	image.src = "https://picsum.photos/200/300?random"
 	
 	newUl.textContent = 
 	`${product.id}`
@@ -69,6 +82,7 @@ function add(items, product, container) {
 			
 	container.appendChild(newUl)
 	newUl.appendChild(newLiTitle)
+	newLiTitle.appendChild(image)
 	newUl.appendChild(btnBool)
 	newLiTitle.appendChild(underLi)
 	newLiTitle.appendChild(btnDelete)

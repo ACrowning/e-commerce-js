@@ -1,0 +1,29 @@
+ul,
+li{
+	list-style: none;
+}
+
+#products{
+	display: flex;
+	background-color: rgb(222, 233, 233);
+}
+
+#product:first-line{
+	visibility: hidden;
+}
+
+
+#image{
+	max-width: 200px;
+	max-height: 300px;
+	
+}
+
+#image:hover{
+	opacity: 0.2;
+	cursor: pointer;
+} 
+
+#image:hover + #product:first-line{
+	visibility: visible;
+} 
