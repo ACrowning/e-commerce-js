@@ -21,19 +21,19 @@ function btnUpdateDel(ul, items, product) {
 function createUl(items, container) {
 	items.forEach(product => {
 		const newUl = document.createElement("ul")
-		newUl.id = "product"
+		newUl.className = "product"
+		const overlay = document.createElement("overlay")
+		overlay.className = "overlay"
 		const image = document.createElement("img")
-		image.id = "image"
+		image.className = "image"
 		const newLiTitle = document.createElement("li")
-		newLiTitle.id = "titleLi"
 		const underLi = document.createElement("div")
 		const btnDelete = document.createElement("button")
 		const btnBool = document.createElement("button")
 
 		image.src = "https://picsum.photos/200/300?random"
-		image.title = "https://picsum.photos/200/300?random"
 		
-		newUl.textContent = 
+		overlay.textContent = 
 		`${product.id}`
 		underLi.textContent = 
 		`${product.title}, ${product.description}, ${product.favorite}`
@@ -42,8 +42,9 @@ function createUl(items, container) {
 		btnDelete.textContent = 'Delete'
 
 		container.appendChild(newUl)
+		newUl.appendChild(overlay)
+		newUl.appendChild(image)
 		newUl.appendChild(newLiTitle)
-		newLiTitle.appendChild(image)
 		newUl.appendChild(btnBool)
 		newLiTitle.appendChild(underLi)
 		newLiTitle.appendChild(btnDelete)
@@ -62,9 +63,11 @@ function add(items, product, container) {
 	items.push(product)
 		
 	const newUl = document.createElement("ul")
-	newUl.id = "product"
+	newUl.className = "product"
+	const overlay = document.createElement("overlay")
+	overlay.className = "overlay"
 	const image = document.createElement("img")
-	image.id = "image"
+	image.className = "image"
 	const newLiTitle = document.createElement("li")
 	const underLi = document.createElement("div")
 	const btnBool = document.createElement("button")
@@ -72,7 +75,7 @@ function add(items, product, container) {
 
 	image.src = "https://picsum.photos/200/300?random"
 	
-	newUl.textContent = 
+	overlay.textContent = 
 	`${product.id}`
 	underLi.textContent = 
 	`${product.title}, ${product.description}, ${product.favorite}`
@@ -81,6 +84,7 @@ function add(items, product, container) {
 	btnDelete.textContent = 'Delete'
 			
 	container.appendChild(newUl)
+	newUl.appendChild(overlay)
 	newUl.appendChild(newLiTitle)
 	newLiTitle.appendChild(image)
 	newUl.appendChild(btnBool)

@@ -5,25 +5,25 @@ li{
 
 #products{
 	display: flex;
-	background-color: rgb(222, 233, 233);
+	flex-wrap: wrap;
 }
 
-#product:first-line{
-	visibility: hidden;
-}
-
-
-#image{
+.product img{
 	max-width: 200px;
 	max-height: 300px;
-	
+	transition: transform 0.3s ease;
 }
 
-#image:hover{
-	opacity: 0.2;
-	cursor: pointer;
-} 
+.overlay{
+	font-size: 30px;
+	display:none;
+}
 
-#image:hover + #product:first-line{
-	visibility: visible;
-} 
+.product:hover .overlay{
+	display: flex;
+  transform: translate(100px, 150px);
+}
+
+.product:hover .image{
+opacity: 0.2;
+}
