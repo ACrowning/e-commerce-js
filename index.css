@@ -6,6 +6,9 @@ li{
 #products{
 	display: flex;
 	flex-wrap: wrap;
+}
+
+.product{
 	position: relative;
 }
 
@@ -15,14 +18,14 @@ li{
 }
 
 .overlay{
-		position: absolute;
-		display: none;
-		width: 200px;
-		height: 300px;
-		font-size: 30px;
-		background-color: black;
-		color:aliceblue;
-		transition: opacity 0.3s ease;
+	position: absolute;
+	display: none;
+	width: 200px;
+	height: 300px;
+	font-size: 30px;
+	background-color: black;
+	color:aliceblue;
+	transition: opacity 0.3s ease;
 }
 
 .product:hover .overlay{
