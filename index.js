@@ -1,4 +1,5 @@
 import products from './mock.js'
+import {imgUrl, btnBoolText, btnDeleteText, boolText, alertText, inputEmptyValue, inputVoidValue} from './constants.js'
 
 const button = document.querySelector('#addButton')
 const prodUl = document.querySelector('#products')
@@ -11,21 +12,20 @@ function creation(product, container, items) {
 	const overlay = document.createElement("div")
 	overlay.className = "overlay"
 	const image = document.createElement("img")
-	image.className = "image"
 	const newLiTitle = document.createElement("li")
 	const underLi = document.createElement("div")
 	const btnDelete = document.createElement("button")
 	const btnBool = document.createElement("button")
 
-	image.src = "https://picsum.photos/200/300?random"
+	image.src = imgUrl
 	
 	overlay.textContent = 
 	`${product.id}`
 	underLi.textContent = 
 	`${product.title}, ${product.description}, ${product.favorite}`
 	
-	btnBool.textContent = 'Add to favorite'
-	btnDelete.textContent = 'Delete'
+	btnBool.textContent = btnBoolText
+	btnDelete.textContent = btnDeleteText
 
 	container.appendChild(newUl)
 	newUl.appendChild(overlay)
@@ -47,7 +47,7 @@ function creation(product, container, items) {
 function btnUpdateBool(product, under, bool) {
 	const favBool = product.favorite === false ? product.favorite = true : product.favorite = false
 	under.textContent = `${product.title}, ${product.description}, ${product.favorite = favBool}`
-	product.favorite === true ? bool.textContent = 'Remove from favorite' : bool.textContent = 'Add to favorite'
+	product.favorite === true ? bool.textContent = boolText : bool.textContent = btnBoolText
 }
 
 function btnUpdateDel(ul, items, product) {
@@ -70,10 +70,10 @@ function add(product, container, items) {
 
 function onAdd(items, tit, des, container) {
 	if (tit.value.length === 0) {
-		return alert('Void title! Enter the title, please')
+		return alert(alertText)
 	}
 	else if (des.value.length === 0) {
-		des.value = '-'
+		des.value = inputEmptyValue
 	}
 	
 	const newProduct = {
@@ -85,8 +85,8 @@ function onAdd(items, tit, des, container) {
 
 	add(newProduct, container, items)
 	
-	tit.value = ''
-	des.value = '' 
+	tit.value = inputVoidValue
+	des.value = inputVoidValue
 }
 
 function enterBtn(event) {
