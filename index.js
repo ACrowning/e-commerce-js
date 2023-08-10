@@ -15,11 +15,11 @@ const inputTitle = document.querySelector("#title");
 const inputDescription = document.querySelector("#description");
 
 function creation(product, container, items) {
+  const newLi = document.createElement("li");
+  newLi.className = "product";
   const overlay = document.createElement("div");
   overlay.className = "overlay";
   const image = document.createElement("img");
-  const newLi = document.createElement("li");
-  newLi.className = "product";
   const underLi = document.createElement("div");
   const btnDelete = document.createElement("button");
   const btnBool = document.createElement("button");
