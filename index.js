@@ -1,105 +1,116 @@
-import products from './mock.js'
+import products from "./mock.js";
+import {
+  IMG_URL,
+  BTN_BOOL_TEXT,
+  BTN_DELETE_TEXT,
+  BOOL_TEXT,
+  ALERT_TEXT,
+  INPUT_EMPTY_VALUE,
+  INPUT_VOID_VALUE,
+} from "./constants.js";
 
-const button = document.querySelector('#addButton')
-const prodUl = document.querySelector('#products')
-const inputTitle = document.querySelector('#title')
-const inputDescription = document.querySelector('#description')
+const button = document.querySelector("#addButton");
+const list = document.querySelector("#list");
+const inputTitle = document.querySelector("#title");
+const inputDescription = document.querySelector("#description");
 
 function creation(product, container, items) {
-	const newUl = document.createElement("ul")
-	newUl.className = "product"
-	const overlay = document.createElement("div")
-	overlay.className = "overlay"
-	const image = document.createElement("img")
-	image.className = "image"
-	const newLiTitle = document.createElement("li")
-	const underLi = document.createElement("div")
-	const btnDelete = document.createElement("button")
-	const btnBool = document.createElement("button")
+  const newLi = document.createElement("li");
+  newLi.className = "product";
+  const overlay = document.createElement("div");
+  overlay.className = "overlay";
+  const image = document.createElement("img");
+  const underLi = document.createElement("div");
+  const btnDelete = document.createElement("button");
+  const btnBool = document.createElement("button");
 
-	image.src = "https://picsum.photos/200/300?random"
-	
-	overlay.textContent = 
-	`${product.id}`
-	underLi.textContent = 
-	`${product.title}, ${product.description}, ${product.favorite}`
-	
-	btnBool.textContent = 'Add to favorite'
-	btnDelete.textContent = 'Delete'
+  image.src = IMG_URL;
 
-	container.appendChild(newUl)
-	newUl.appendChild(overlay)
-	newUl.appendChild(image)
-	newUl.appendChild(newLiTitle)
-	newUl.appendChild(btnBool)
-	newLiTitle.appendChild(underLi)
-	newLiTitle.appendChild(btnDelete)
+  overlay.textContent = `${product.id}`;
+  underLi.textContent = `${product.title}, ${product.description}, ${product.favorite}`;
 
-	btnBool.onclick = function () {
-		btnUpdateBool(product, underLi, btnBool)
-	}
+  btnBool.textContent = BTN_BOOL_TEXT;
+  btnDelete.textContent = BTN_DELETE_TEXT;
 
-	btnDelete.onclick = function () {
-		btnUpdateDel(newUl, items, product)
-	}
+  container.appendChild(newLi);
+  newLi.appendChild(overlay);
+  newLi.appendChild(image);
+  newLi.appendChild(underLi);
+  newLi.appendChild(btnBool);
+  newLi.appendChild(btnDelete);
+
+  btnBool.onclick = function () {
+    btnUpdateBool(product, underLi, btnBool);
+  };
+
+  btnDelete.onclick = function () {
+    btnUpdateDel(newLi, items, product);
+  };
 }
 
 function btnUpdateBool(product, under, bool) {
-	const favBool = product.favorite === false ? product.favorite = true : product.favorite = false
-	under.textContent = `${product.title}, ${product.description}, ${product.favorite = favBool}`
-	product.favorite === true ? bool.textContent = 'Remove from favorite' : bool.textContent = 'Add to favorite'
+  const favBool =
+    product.favorite === false
+      ? (product.favorite = true)
+      : (product.favorite = false);
+  under.textContent = `${product.title}, ${
+    product.description
+  }, ${(product.favorite = favBool)}`;
+  product.favorite === true
+    ? (bool.textContent = BOOL_TEXT)
+    : (bool.textContent = BTN_BOOL_TEXT);
 }
 
 function btnUpdateDel(ul, items, product) {
-	ul.remove()
-	const ind = items.indexOf(product)
-	items.splice(ind, 1)
+  ul.remove();
+  const ind = items.indexOf(product);
+  items.splice(ind, 1);
 }
 
-
 function createUl(items, container) {
-	items.forEach(product => {
-		creation(product, container, items)
-	})
+  items.forEach((product) => {
+    creation(product, container, items);
+  });
 }
 
 function add(product, container, items) {
-	items.push(product)
-	creation(product, container, items)
+  items.push(product);
+  creation(product, container, items);
 }
 
 function onAdd(items, tit, des, container) {
-	if (tit.value.length === 0) {
-		return alert('Void title! Enter the title, please')
-	}
-	else if (des.value.length === 0) {
-		des.value = '-'
-	}
-	
-	const newProduct = {
-		id: `${items.length + 1}`,
-		title: `${tit.value}`,
-		description: `${des.value}`,
-		favorite: false
-	}
+  if (tit.value.length === 0) {
+    return alert(ALERT_TEXT);
+  } else if (des.value.length === 0) {
+    des.value = INPUT_EMPTY_VALUE;
+  }
 
-	add(newProduct, container, items)
-	
-	tit.value = ''
-	des.value = '' 
+  const newProduct = {
+    id: `${items.length + 1}`,
+    title: `${tit.value}`,
+    description: `${des.value}`,
+    favorite: false,
+  };
+
+  add(newProduct, container, items);
+
+  tit.value = INPUT_VOID_VALUE;
+  des.value = INPUT_VOID_VALUE;
 }
 
 function enterBtn(event) {
-	if (event.key === 'Enter') {
-		button.click()
-	}}
-
-function init() {
-	button.addEventListener("click", function () {
-	onAdd(products, inputTitle, inputDescription, prodUl)})
-	
-	document.addEventListener('keydown', enterBtn)
-	createUl(products, prodUl)
+  if (event.key === "Enter") {
+    button.click();
+  }
 }
 
-init()
+function init() {
+  button.addEventListener("click", function () {
+    onAdd(products, inputTitle, inputDescription, list);
+  });
+
+  document.addEventListener("keydown", enterBtn);
+  createUl(products, list);
+}
+
+init();
