@@ -13,6 +13,8 @@ const button = document.querySelector("#addButton");
 const list = document.querySelector("#list");
 const inputTitle = document.querySelector("#title");
 const inputDescription = document.querySelector("#description");
+const inputCount = document.querySelector("#count");
+const cartCount = document.querySelector(".cartCount");
 
 function creation(product, container, items) {
   const newLi = document.createElement("li");
@@ -20,13 +22,25 @@ function creation(product, container, items) {
   const overlay = document.createElement("div");
   overlay.className = "overlay";
   const image = document.createElement("img");
+  const underImg = document.createElement("div");
   const underLi = document.createElement("div");
   const btnDelete = document.createElement("button");
   const btnBool = document.createElement("button");
+  const newCount = document.createElement("input");
+  newCount.type = "number";
+  const plus = document.createElement("button");
+  const minus = document.createElement("button");
+  const addCart = document.createElement("button");
+  addCart.className = "addCart";
 
   image.src = IMG_URL;
 
-  overlay.textContent = `${product.id}`;
+  plus.textContent = "+";
+  minus.textContent = "-";
+  addCart.textContent = "Add to cart";
+  newCount.placeholder = 0;
+
+  overlay.textContent = `${product.id} count:${product.count}`;
   underLi.textContent = `${product.title}, ${product.description}, ${product.favorite}`;
 
   btnBool.textContent = BTN_BOOL_TEXT;
@@ -35,9 +49,20 @@ function creation(product, container, items) {
   container.appendChild(newLi);
   newLi.appendChild(overlay);
   newLi.appendChild(image);
+  newLi.appendChild(underImg);
+  underImg.appendChild(minus);
+  underImg.appendChild(newCount);
+  underImg.appendChild(plus);
+  underImg.appendChild(addCart);
   newLi.appendChild(underLi);
   newLi.appendChild(btnBool);
   newLi.appendChild(btnDelete);
+
+  btnDis(newCount, product, minus, plus);
+
+  addCart.onclick = function () {
+    btnAddCart(newCount, product, cartCount, overlay);
+  };
 
   btnBool.onclick = function () {
     btnUpdateBool(product, underLi, btnBool);
@@ -67,6 +92,35 @@ function btnUpdateDel(ul, items, product) {
   items.splice(ind, 1);
 }
 
+function btnDis(newCnt, product, mn, pl) {
+  let num = 1;
+  pl.onclick = function () {
+    newCnt.value > product.count
+      ? (pl.disabled = true)
+      : (newCnt.value = num++);
+    newCnt.value > 0 ? (mn.disabled = false) : (newCnt.value = num++);
+  };
+
+  mn.onclick = function () {
+    newCnt.value < 0 ? (mn.disabled = true) : (newCnt.value = num--);
+    newCnt.value < product.count
+      ? (pl.disabled = false)
+      : (newCnt.value = num--);
+  };
+}
+
+function btnAddCart(newCnt, product, cartCnt, over) {
+  if (newCnt.value <= 0) {
+    alert("Wrong count!");
+  } else if (newCnt.value > product.count) {
+    alert("Wrong count!");
+  } else {
+    cartCnt.textContent = newCnt.value;
+    over.textContent = `${product.id} count:${(product.count =
+      product.count - newCnt.value)}`;
+  }
+}
+
 function createUl(items, container) {
   items.forEach((product) => {
     creation(product, container, items);
@@ -78,7 +132,7 @@ function add(product, container, items) {
   creation(product, container, items);
 }
 
-function onAdd(items, tit, des, container) {
+function onAdd(items, tit, des, container, cnt) {
   if (tit.value.length === 0) {
     return alert(ALERT_TEXT);
   } else if (des.value.length === 0) {
@@ -90,12 +144,14 @@ function onAdd(items, tit, des, container) {
     title: `${tit.value}`,
     description: `${des.value}`,
     favorite: false,
+    count: `${cnt.value}`,
   };
 
   add(newProduct, container, items);
 
   tit.value = INPUT_VOID_VALUE;
   des.value = INPUT_VOID_VALUE;
+  cnt.value = INPUT_VOID_VALUE;
 }
 
 function enterBtn(event) {
@@ -106,7 +162,7 @@ function enterBtn(event) {
 
 function init() {
   button.addEventListener("click", function () {
-    onAdd(products, inputTitle, inputDescription, list);
+    onAdd(products, inputTitle, inputDescription, list, inputCount);
   });
 
   document.addEventListener("keydown", enterBtn);

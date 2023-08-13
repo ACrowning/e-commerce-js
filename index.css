@@ -3,6 +3,10 @@ li {
   list-style: none;
 }
 
+#cart {
+  text-align: right;
+}
+
 #list {
   display: flex;
   flex-wrap: wrap;
