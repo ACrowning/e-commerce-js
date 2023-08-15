@@ -5,8 +5,11 @@ import {
   BTN_DELETE_TEXT,
   BOOL_TEXT,
   ALERT_TEXT,
-  INPUT_EMPTY_VALUE,
+  INPUT_MINUS_VALUE,
+  INPUT_PLUS_VALUE,
   INPUT_VOID_VALUE,
+  BTN_CART_TEXT,
+  ALERT_COUNT_TEXT,
 } from "./constants.js";
 
 const button = document.querySelector("#addButton");
@@ -25,7 +28,7 @@ function creation(product, container, items) {
   const underImg = document.createElement("div");
   const underLi = document.createElement("div");
   const btnDelete = document.createElement("button");
-  const btnBool = document.createElement("button");
+  const btnBoolean = document.createElement("button");
   const newCount = document.createElement("input");
   newCount.type = "number";
   const plus = document.createElement("button");
@@ -35,15 +38,15 @@ function creation(product, container, items) {
 
   image.src = IMG_URL;
 
-  plus.textContent = "+";
-  minus.textContent = "-";
-  addCart.textContent = "Add to cart";
-  newCount.placeholder = 0;
+  plus.textContent = INPUT_PLUS_VALUE;
+  minus.textContent = INPUT_MINUS_VALUE;
+  addCart.textContent = BTN_CART_TEXT;
+  newCount.placeholder = 1;
 
-  overlay.textContent = `${product.id} count:${product.count}`;
+  overlay.textContent = `${product.id} count: ${product.count}`;
   underLi.textContent = `${product.title}, ${product.description}, ${product.favorite}`;
 
-  btnBool.textContent = BTN_BOOL_TEXT;
+  btnBoolean.textContent = BTN_BOOL_TEXT;
   btnDelete.textContent = BTN_DELETE_TEXT;
 
   container.appendChild(newLi);
@@ -55,70 +58,99 @@ function creation(product, container, items) {
   underImg.appendChild(plus);
   underImg.appendChild(addCart);
   newLi.appendChild(underLi);
-  newLi.appendChild(btnBool);
+  newLi.appendChild(btnBoolean);
   newLi.appendChild(btnDelete);
 
-  btnDis(newCount, product, minus, plus);
+  btnPlusMinus(newCount, product, minus, plus);
 
   addCart.onclick = function () {
-    btnAddCart(newCount, product, cartCount, overlay);
+    const parseCartCount = Number(cartCount.textContent);
+    const parseNewCount = Number(newCount.value);
+    btnAddCart(
+      newCount,
+      product,
+      cartCount,
+      overlay,
+      parseCartCount,
+      parseNewCount
+    );
   };
 
-  btnBool.onclick = function () {
-    btnUpdateBool(product, underLi, btnBool);
+  btnBoolean.onclick = function () {
+    btnUpdateBoolean(product, underLi, btnBoolean);
   };
 
   btnDelete.onclick = function () {
-    btnUpdateDel(newLi, items, product);
+    btnUpdateDelete(newLi, items, product);
   };
 }
 
-function btnUpdateBool(product, under, bool) {
-  const favBool =
-    product.favorite === false
-      ? (product.favorite = true)
-      : (product.favorite = false);
-  under.textContent = `${product.title}, ${
-    product.description
-  }, ${(product.favorite = favBool)}`;
-  product.favorite === true
-    ? (bool.textContent = BOOL_TEXT)
-    : (bool.textContent = BTN_BOOL_TEXT);
-}
-
-function btnUpdateDel(ul, items, product) {
-  ul.remove();
-  const ind = items.indexOf(product);
-  items.splice(ind, 1);
-}
-
-function btnDis(newCnt, product, mn, pl) {
-  let num = 1;
-  pl.onclick = function () {
-    newCnt.value > product.count
-      ? (pl.disabled = true)
-      : (newCnt.value = num++);
-    newCnt.value > 0 ? (mn.disabled = false) : (newCnt.value = num++);
-  };
-
-  mn.onclick = function () {
-    newCnt.value < 0 ? (mn.disabled = true) : (newCnt.value = num--);
-    newCnt.value < product.count
-      ? (pl.disabled = false)
-      : (newCnt.value = num--);
-  };
-}
-
-function btnAddCart(newCnt, product, cartCnt, over) {
-  if (newCnt.value <= 0) {
-    alert("Wrong count!");
-  } else if (newCnt.value > product.count) {
-    alert("Wrong count!");
+function btnUpdateBoolean(product, under, boolean) {
+  if (product.favorite === false) {
+    under.textContent = `${product.title}, ${
+      product.description
+    }, ${(product.favorite = true)}`;
   } else {
-    cartCnt.textContent = newCnt.value;
-    over.textContent = `${product.id} count:${(product.count =
-      product.count - newCnt.value)}`;
+    under.textContent = `${product.title}, ${
+      product.description
+    }, ${(product.favorite = false)}`;
   }
+
+  if (product.favorite === true) {
+    boolean.textContent = BOOL_TEXT;
+  } else {
+    boolean.textContent = BTN_BOOL_TEXT;
+  }
+}
+
+function btnUpdateDelete(li, items, product) {
+  li.remove();
+  const itemsIndex = items.indexOf(product);
+  items.splice(itemsIndex, 1);
+}
+
+function btnPlusMinus(theNewCount, product, btnMinus, btnPlus) {
+  btnPlus.onclick = function () {
+    if (theNewCount.value >= product.count) {
+      btnPlus.disabled = true;
+    } else {
+      theNewCount.value++;
+    }
+    if (theNewCount.value > null) {
+      btnMinus.disabled = false;
+    }
+  };
+
+  btnMinus.onclick = function () {
+    if (theNewCount.value <= null) {
+      btnMinus.disabled = true;
+    } else {
+      theNewCount.value--;
+    }
+    if (theNewCount.value < product.count) {
+      btnPlus.disabled = false;
+    }
+  };
+}
+
+function btnAddCart(
+  theNewCount,
+  product,
+  theCartCount,
+  over,
+  cartCountParsed,
+  newCountParsed
+) {
+  if (theNewCount.value <= null) {
+    alert(ALERT_COUNT_TEXT);
+  } else if (theNewCount.value > product.count) {
+    alert(ALERT_COUNT_TEXT);
+  } else {
+    theCartCount.textContent = cartCountParsed + newCountParsed;
+    over.textContent = `${product.id} count: ${(product.count =
+      product.count - theNewCount.value)}`;
+  }
+  theNewCount.value = INPUT_VOID_VALUE;
 }
 
 function createUl(items, container) {
@@ -132,26 +164,26 @@ function add(product, container, items) {
   creation(product, container, items);
 }
 
-function onAdd(items, tit, des, container, cnt) {
-  if (tit.value.length === 0) {
+function onAdd(items, titleOnAdd, descriptionOnAdd, container, toInputCount) {
+  if (titleOnAdd.value.length === 0) {
     return alert(ALERT_TEXT);
-  } else if (des.value.length === 0) {
-    des.value = INPUT_EMPTY_VALUE;
+  } else if (descriptionOnAdd.value.length === 0) {
+    descriptionOnAdd.value = INPUT_MINUS_VALUE;
   }
 
   const newProduct = {
     id: `${items.length + 1}`,
-    title: `${tit.value}`,
-    description: `${des.value}`,
+    title: `${titleOnAdd.value}`,
+    description: `${descriptionOnAdd.value}`,
     favorite: false,
-    count: `${cnt.value}`,
+    count: `${toInputCount.value}`,
   };
 
   add(newProduct, container, items);
 
-  tit.value = INPUT_VOID_VALUE;
-  des.value = INPUT_VOID_VALUE;
-  cnt.value = INPUT_VOID_VALUE;
+  titleOnAdd.value = INPUT_VOID_VALUE;
+  descriptionOnAdd.value = INPUT_VOID_VALUE;
+  toInputCount.value = INPUT_VOID_VALUE;
 }
 
 function enterBtn(event) {
