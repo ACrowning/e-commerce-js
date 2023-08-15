@@ -176,7 +176,7 @@ function onAdd(items, titleOnAdd, descriptionOnAdd, container, toInputCount) {
     title: `${titleOnAdd.value}`,
     description: `${descriptionOnAdd.value}`,
     favorite: false,
-    count: `${toInputCount.value}`,
+    count: Number(toInputCount.value),
   };
 
   add(newProduct, container, items);
