@@ -10,6 +10,7 @@ import {
   INPUT_VOID_VALUE,
   BTN_CART_TEXT,
   ALERT_COUNT_TEXT,
+  INPUT_COUNT_TEXT,
 } from "./constants.js";
 
 const button = document.querySelector("#addButton");
@@ -39,9 +40,12 @@ function creation(product, container, items) {
   image.src = IMG_URL;
 
   plus.textContent = INPUT_PLUS_VALUE;
+  plus.disabled = true;
   minus.textContent = INPUT_MINUS_VALUE;
+  minus.disabled = true;
   addCart.textContent = BTN_CART_TEXT;
-  newCount.placeholder = 1;
+  newCount.placeholder = INPUT_COUNT_TEXT;
+  newCount.value = 1;
 
   overlay.textContent = `${product.id} count: ${product.count}`;
   underLi.textContent = `${product.title}, ${product.description}, ${product.favorite}`;
@@ -111,23 +115,23 @@ function btnUpdateDelete(li, items, product) {
 
 function btnPlusMinus(theNewCount, product, btnMinus, btnPlus) {
   btnPlus.onclick = function () {
-    if (theNewCount.value >= product.count) {
+    if (+theNewCount.value >= product.count) {
       btnPlus.disabled = true;
     } else {
-      theNewCount.value++;
+      Number(theNewCount.value++);
     }
-    if (theNewCount.value > null) {
+    if (+theNewCount.value > 0) {
       btnMinus.disabled = false;
     }
   };
 
   btnMinus.onclick = function () {
-    if (theNewCount.value <= null) {
+    if (+theNewCount.value <= 0) {
       btnMinus.disabled = true;
     } else {
-      theNewCount.value--;
+      Number(theNewCount.value--);
     }
-    if (theNewCount.value < product.count) {
+    if (+theNewCount.value < product.count) {
       btnPlus.disabled = false;
     }
   };
@@ -141,7 +145,7 @@ function btnAddCart(
   cartCountParsed,
   newCountParsed
 ) {
-  if (theNewCount.value <= null) {
+  if (theNewCount.value <= 0) {
     alert(ALERT_COUNT_TEXT);
   } else if (theNewCount.value > product.count) {
     alert(ALERT_COUNT_TEXT);
@@ -169,6 +173,9 @@ function onAdd(items, titleOnAdd, descriptionOnAdd, container, toInputCount) {
     return alert(ALERT_TEXT);
   } else if (descriptionOnAdd.value.length === 0) {
     descriptionOnAdd.value = INPUT_MINUS_VALUE;
+  }
+  if (Number(toInputCount.value) <= 0) {
+    return alert(ALERT_COUNT_TEXT);
   }
 
   const newProduct = {

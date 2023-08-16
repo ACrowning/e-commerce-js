@@ -8,3 +8,4 @@ export const INPUT_PLUS_VALUE = "+";
 export const INPUT_VOID_VALUE = "";
 export const BTN_CART_TEXT = "Add to cart";
 export const ALERT_COUNT_TEXT = "Wrong count!";
+export const INPUT_COUNT_TEXT = "Product count";
