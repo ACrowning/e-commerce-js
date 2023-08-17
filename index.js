@@ -67,6 +67,7 @@ function creation(product, container, items) {
 
   if (product.count === 0) {
     addCart.disabled = true;
+    plus.disabled = true;
   }
 
   addCart.onclick = function () {
@@ -82,6 +83,7 @@ function creation(product, container, items) {
     );
     if (product.count === 0) {
       addCart.disabled = true;
+      plus.disabled = true;
     }
   };
 
