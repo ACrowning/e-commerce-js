@@ -8,7 +8,7 @@ import {
   INPUT_MINUS_VALUE,
   INPUT_PLUS_VALUE,
   INPUT_VOID_VALUE,
-  BTN_CART_TEXT,
+  ADD_TO_CART,
   ALERT_COUNT_TEXT,
   INPUT_COUNT_TEXT,
 } from "./constants.js";
@@ -41,9 +41,9 @@ function creation(product, container, items) {
 
   plus.textContent = INPUT_PLUS_VALUE;
   minus.textContent = INPUT_MINUS_VALUE;
-  addCart.textContent = BTN_CART_TEXT;
+  addCart.textContent = ADD_TO_CART;
   newCount.placeholder = INPUT_COUNT_TEXT;
-  newCount.value = 1;
+  newCount.value = 0;
 
   overlay.textContent = `${product.id} count: ${product.count}`;
   underLi.textContent = `${product.title}, ${product.description}, ${product.favorite}`;
@@ -65,9 +65,13 @@ function creation(product, container, items) {
 
   btnPlusMinus(newCount, product, minus, plus);
 
+  if (product.count === 0) {
+    addCart.disabled = true;
+  }
+
   addCart.onclick = function () {
-    const parseCartCount = Number(cartCount.textContent);
-    const parseNewCount = Number(newCount.value);
+    const parseCartCount = parseInt(cartCount.textContent);
+    const parseNewCount = parseInt(newCount.value);
     btnAddCart(
       newCount,
       product,
@@ -76,6 +80,9 @@ function creation(product, container, items) {
       parseCartCount,
       parseNewCount
     );
+    if (product.count === 0) {
+      addCart.disabled = true;
+    }
   };
 
   btnBoolean.onclick = function () {
@@ -112,24 +119,27 @@ function btnUpdateDelete(li, items, product) {
 }
 
 function btnPlusMinus(theNewCount, product, btnMinus, btnPlus) {
-  if (+theNewCount.value >= product.count) {
+  const newValue = parseInt(theNewCount.value) + 1;
+  theNewCount.value = newValue;
+
+  if (newValue >= product.count) {
     btnPlus.disabled = true;
   }
   btnPlus.onclick = function () {
     btnMinus.disabled = false;
-    Number(theNewCount.value++);
-    if (+theNewCount.value >= product.count) {
+    parseInt(theNewCount.value++);
+    if (theNewCount.value >= product.count) {
       btnPlus.disabled = true;
     }
   };
 
-  if (+theNewCount.value <= 0) {
+  if (theNewCount.value <= 1) {
     btnMinus.disabled = true;
   }
   btnMinus.onclick = function () {
     btnPlus.disabled = false;
-    Number(theNewCount.value--);
-    if (+theNewCount.value <= 0) {
+    parseInt(theNewCount.value--);
+    if (theNewCount.value <= 1) {
       btnMinus.disabled = true;
     }
   };
@@ -160,7 +170,6 @@ function createUl(items, container) {
   items.forEach((product) => {
     creation(product, container, items);
   });
-  console.log(products);
 }
 
 function add(product, container, items) {

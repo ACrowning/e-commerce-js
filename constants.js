@@ -6,6 +6,6 @@ export const ALERT_TEXT = "Void title! Enter the title, please";
 export const INPUT_MINUS_VALUE = "-";
 export const INPUT_PLUS_VALUE = "+";
 export const INPUT_VOID_VALUE = "";
-export const BTN_CART_TEXT = "Add to cart";
+export const ADD_TO_CART = "Add to cart";
 export const ALERT_COUNT_TEXT = "Wrong count!";
 export const INPUT_COUNT_TEXT = "Product count";
