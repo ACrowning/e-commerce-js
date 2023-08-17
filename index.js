@@ -40,9 +40,7 @@ function creation(product, container, items) {
   image.src = IMG_URL;
 
   plus.textContent = INPUT_PLUS_VALUE;
-  plus.disabled = true;
   minus.textContent = INPUT_MINUS_VALUE;
-  minus.disabled = true;
   addCart.textContent = BTN_CART_TEXT;
   newCount.placeholder = INPUT_COUNT_TEXT;
   newCount.value = 1;
@@ -114,25 +112,25 @@ function btnUpdateDelete(li, items, product) {
 }
 
 function btnPlusMinus(theNewCount, product, btnMinus, btnPlus) {
+  if (+theNewCount.value >= product.count) {
+    btnPlus.disabled = true;
+  }
   btnPlus.onclick = function () {
+    btnMinus.disabled = false;
+    Number(theNewCount.value++);
     if (+theNewCount.value >= product.count) {
       btnPlus.disabled = true;
-    } else {
-      Number(theNewCount.value++);
-    }
-    if (+theNewCount.value > 0) {
-      btnMinus.disabled = false;
     }
   };
 
+  if (+theNewCount.value <= 0) {
+    btnMinus.disabled = true;
+  }
   btnMinus.onclick = function () {
+    btnPlus.disabled = false;
+    Number(theNewCount.value--);
     if (+theNewCount.value <= 0) {
       btnMinus.disabled = true;
-    } else {
-      Number(theNewCount.value--);
-    }
-    if (+theNewCount.value < product.count) {
-      btnPlus.disabled = false;
     }
   };
 }
@@ -154,13 +152,15 @@ function btnAddCart(
     over.textContent = `${product.id} count: ${(product.count =
       product.count - theNewCount.value)}`;
   }
-  theNewCount.value = INPUT_VOID_VALUE;
+  theNewCount.value = 1;
+  console.log(products);
 }
 
 function createUl(items, container) {
   items.forEach((product) => {
     creation(product, container, items);
   });
+  console.log(products);
 }
 
 function add(product, container, items) {
