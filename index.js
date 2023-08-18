@@ -63,12 +63,26 @@ function creation(product, container, items) {
   newLi.appendChild(btnBoolean);
   newLi.appendChild(btnDelete);
 
-  btnPlusMinus(newCount, product, minus, plus);
-
   if (product.count === 0) {
     addCart.disabled = true;
     plus.disabled = true;
   }
+
+  const newValue = parseInt(newCount.value) + 1;
+  newCount.value = newValue;
+  if (newValue >= product.count) {
+    plus.disabled = true;
+  }
+  plus.onclick = function () {
+    btnToPlus(newCount, product, minus, plus);
+  };
+
+  if (newCount.value <= 1) {
+    minus.disabled = true;
+  }
+  minus.onclick = function () {
+    btnToMinus(newCount, minus, plus);
+  };
 
   addCart.onclick = function () {
     const parseCartCount = parseInt(cartCount.textContent);
@@ -120,31 +134,20 @@ function btnUpdateDelete(li, items, product) {
   items.splice(itemsIndex, 1);
 }
 
-function btnPlusMinus(theNewCount, product, btnMinus, btnPlus) {
-  const newValue = parseInt(theNewCount.value) + 1;
-  theNewCount.value = newValue;
-
-  if (newValue >= product.count) {
+function btnToPlus(theNewCount, product, btnMinus, btnPlus) {
+  btnMinus.disabled = false;
+  parseInt(theNewCount.value++);
+  if (theNewCount.value >= product.count) {
     btnPlus.disabled = true;
   }
-  btnPlus.onclick = function () {
-    btnMinus.disabled = false;
-    parseInt(theNewCount.value++);
-    if (theNewCount.value >= product.count) {
-      btnPlus.disabled = true;
-    }
-  };
+}
 
+function btnToMinus(theNewCount, btnMinus, btnPlus) {
+  btnPlus.disabled = false;
+  parseInt(theNewCount.value--);
   if (theNewCount.value <= 1) {
     btnMinus.disabled = true;
   }
-  btnMinus.onclick = function () {
-    btnPlus.disabled = false;
-    parseInt(theNewCount.value--);
-    if (theNewCount.value <= 1) {
-      btnMinus.disabled = true;
-    }
-  };
 }
 
 function btnAddCart(
@@ -165,7 +168,6 @@ function btnAddCart(
       product.count - theNewCount.value)}`;
   }
   theNewCount.value = 1;
-  console.log(products);
 }
 
 function createUl(items, container) {
