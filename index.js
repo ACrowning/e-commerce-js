@@ -68,9 +68,7 @@ function creation(product, container, items) {
     plus.disabled = true;
   }
 
-  const newValue = parseInt(newCount.value) + 1;
-  newCount.value = newValue;
-  if (newValue >= product.count) {
+  if (newCount.value >= product.count) {
     plus.disabled = true;
   }
   plus.onclick = function () {
@@ -136,7 +134,10 @@ function btnUpdateDelete(li, items, product) {
 
 function btnToPlus(theNewCount, product, btnMinus, btnPlus) {
   btnMinus.disabled = false;
-  parseInt(theNewCount.value++);
+
+  const newValue = parseInt(theNewCount.value) + 1;
+  theNewCount.value = newValue;
+
   if (theNewCount.value >= product.count) {
     btnPlus.disabled = true;
   }
@@ -144,7 +145,10 @@ function btnToPlus(theNewCount, product, btnMinus, btnPlus) {
 
 function btnToMinus(theNewCount, btnMinus, btnPlus) {
   btnPlus.disabled = false;
-  parseInt(theNewCount.value--);
+
+  const newValue = parseInt(theNewCount.value) - 1;
+  theNewCount.value = newValue;
+
   if (theNewCount.value <= 1) {
     btnMinus.disabled = true;
   }
