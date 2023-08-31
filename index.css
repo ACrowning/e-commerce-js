@@ -7,6 +7,31 @@ li {
   text-align: right;
 }
 
+.gridMain {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+#app {
+  display: flex;
+  width: auto;
+  height: auto;
+  padding: 20px 25px;
+  margin-right: none;
+  border: 1px solid black;
+  box-sizing: content-box;
+  flex-direction: column;
+}
+
+#products {
+  display: flex;
+  width: auto;
+  height: auto;
+  padding: 20px 25px;
+  border: 1px solid black;
+  box-sizing: content-box;
+}
+
 #list {
   display: flex;
   flex-wrap: wrap;
@@ -22,6 +47,10 @@ li {
   max-height: 300px;
 }
 
+.favoriteButton {
+  transform: translate(-100%, -1350%);
+}
+
 .overlay {
   position: absolute;
   display: none;
@@ -35,7 +64,7 @@ li {
 
 .product:hover .overlay {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: space-between;
   opacity: 0.6;
 }
