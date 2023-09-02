@@ -3,16 +3,29 @@ li {
   list-style: none;
 }
 
-#cart {
-  text-align: right;
+body {
+  border: 1px solid black;
 }
 
-.gridMain {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
+.allCart {
+  display: flex;
+  width: 100px;
+  height: 40px;
+  padding: 20px 25px;
+  margin-left: auto;
+  border: 1px solid black;
 }
 
-#app {
+.page-container {
+  display: flex;
+}
+
+#navbar,
+#products {
+  flex-shrink: 2;
+}
+
+#navbar {
   display: flex;
   width: auto;
   height: auto;
@@ -25,8 +38,8 @@ li {
 
 #products {
   display: flex;
-  width: auto;
-  height: auto;
+  width: 100vw;
+  height: 100vh;
   padding: 20px 25px;
   border: 1px solid black;
   box-sizing: content-box;
@@ -39,7 +52,9 @@ li {
 
 .product {
   position: relative;
-  margin-left: 20px;
+  margin-right: 40px;
+  width: 200px;
+  height: 350px;
 }
 
 .product img {
@@ -48,7 +63,15 @@ li {
 }
 
 .favoriteButton {
-  transform: translate(-100%, -1350%);
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.addCart {
+  position: absolute;
+  right: 0;
+  bottom: 6.5px;
 }
 
 .overlay {

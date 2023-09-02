@@ -45,7 +45,7 @@ function creation(product, container, items) {
   addCart.textContent = ADD_TO_CART;
   newCount.placeholder = INPUT_COUNT_TEXT;
   newCount.value = 0;
-  newCount.style.width = `${50}px`;
+  newCount.style.width = `${65}px`;
 
   underLi.textContent = `${product.title}, ${product.description}`;
 
@@ -62,7 +62,7 @@ function creation(product, container, items) {
   underImg.appendChild(minus);
   underImg.appendChild(newCount);
   underImg.appendChild(plus);
-  underImg.appendChild(addCart);
+  newLi.appendChild(addCart);
 
   if (product.count === 0) {
     addCart.disabled = true;
