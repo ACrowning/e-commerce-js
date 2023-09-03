@@ -3,9 +3,12 @@ li {
   list-style: none;
 }
 
+body {
+  margin: 0;
+}
+
 .main {
   border: 1px solid black;
-  margin: none;
 }
 
 .allCart {
