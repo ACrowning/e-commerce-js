@@ -30,6 +30,7 @@ function creation(product, container, items) {
   const underLi = document.createElement("div");
   const btnDelete = document.createElement("button");
   const btnBoolean = document.createElement("button");
+  btnBoolean.className = "favoriteButton";
   const newCount = document.createElement("input");
   newCount.type = "number";
   const plus = document.createElement("button");
@@ -44,9 +45,9 @@ function creation(product, container, items) {
   addCart.textContent = ADD_TO_CART;
   newCount.placeholder = INPUT_COUNT_TEXT;
   newCount.value = 0;
+  newCount.style.width = `${65}px`;
 
-  overlay.textContent = `${product.id} count: ${product.count}`;
-  underLi.textContent = `${product.title}, ${product.description}, ${product.favorite}`;
+  underLi.textContent = `${product.title}, ${product.description}`;
 
   btnBoolean.textContent = BTN_BOOL_TEXT;
   btnDelete.textContent = BTN_DELETE_TEXT;
@@ -54,14 +55,14 @@ function creation(product, container, items) {
   container.appendChild(newLi);
   newLi.appendChild(overlay);
   newLi.appendChild(image);
+  overlay.appendChild(btnDelete);
+  newLi.appendChild(btnBoolean);
   newLi.appendChild(underImg);
+  underImg.appendChild(underLi);
   underImg.appendChild(minus);
   underImg.appendChild(newCount);
   underImg.appendChild(plus);
-  underImg.appendChild(addCart);
-  newLi.appendChild(underLi);
-  newLi.appendChild(btnBoolean);
-  newLi.appendChild(btnDelete);
+  newLi.appendChild(addCart);
 
   if (product.count === 0) {
     addCart.disabled = true;
@@ -85,14 +86,7 @@ function creation(product, container, items) {
   addCart.onclick = function () {
     const parseCartCount = parseInt(cartCount.textContent);
     const parseNewCount = parseInt(newCount.value);
-    btnAddCart(
-      newCount,
-      product,
-      cartCount,
-      overlay,
-      parseCartCount,
-      parseNewCount
-    );
+    btnAddCart(newCount, product, cartCount, parseCartCount, parseNewCount);
     if (product.count === 0) {
       addCart.disabled = true;
       plus.disabled = true;
@@ -100,7 +94,7 @@ function creation(product, container, items) {
   };
 
   btnBoolean.onclick = function () {
-    btnUpdateBoolean(product, underLi, btnBoolean);
+    btnUpdateBoolean(product, btnBoolean);
   };
 
   btnDelete.onclick = function () {
@@ -108,15 +102,11 @@ function creation(product, container, items) {
   };
 }
 
-function btnUpdateBoolean(product, under, boolean) {
+function btnUpdateBoolean(product, boolean) {
   if (product.favorite === false) {
-    under.textContent = `${product.title}, ${
-      product.description
-    }, ${(product.favorite = true)}`;
+    product.favorite = true;
   } else {
-    under.textContent = `${product.title}, ${
-      product.description
-    }, ${(product.favorite = false)}`;
+    product.favorite = false;
   }
 
   if (product.favorite === true) {
@@ -158,7 +148,6 @@ function btnAddCart(
   theNewCount,
   product,
   theCartCount,
-  over,
   cartCountParsed,
   newCountParsed
 ) {
@@ -168,8 +157,7 @@ function btnAddCart(
     alert(ALERT_COUNT_TEXT);
   } else {
     theCartCount.textContent = cartCountParsed + newCountParsed;
-    over.textContent = `${product.id} count: ${(product.count =
-      product.count - theNewCount.value)}`;
+    product.count = product.count - theNewCount.value;
   }
   theNewCount.value = 1;
 }
