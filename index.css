@@ -3,8 +3,9 @@ li {
   list-style: none;
 }
 
-body {
+.main {
   border: 1px solid black;
+  margin: none;
 }
 
 .allCart {
@@ -13,7 +14,7 @@ body {
   height: 40px;
   padding: 20px 25px;
   margin-left: auto;
-  border: 1px solid black;
+  border-left: 1px solid;
 }
 
 .page-container {
@@ -31,17 +32,20 @@ body {
   height: auto;
   padding: 20px 25px;
   margin-right: none;
-  border: 1px solid black;
+  border: 1px solid;
+  border-left: none;
+  border-bottom: none;
   box-sizing: content-box;
   flex-direction: column;
+  gap: 15px;
 }
 
 #products {
   display: flex;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 150px);
   padding: 20px 25px;
-  border: 1px solid black;
+  border-top: 1px solid;
   box-sizing: content-box;
 }
 
