@@ -20,7 +20,7 @@ const inputDescription = document.querySelector("#description");
 const inputCount = document.querySelector("#count");
 const cartCount = document.querySelector(".cartCount");
 
-function creation(product, container, items) {
+const creation = (product, container, items) => {
   const newLi = document.createElement("li");
   newLi.className = "product";
   const overlay = document.createElement("div");
@@ -72,18 +72,18 @@ function creation(product, container, items) {
   if (newCount.value >= product.count) {
     plus.disabled = true;
   }
-  plus.onclick = function () {
+  plus.onclick = () => {
     btnToPlus(newCount, product, minus, plus);
   };
 
   if (newCount.value <= 1) {
     minus.disabled = true;
   }
-  minus.onclick = function () {
+  minus.onclick = () => {
     btnToMinus(newCount, minus, plus);
   };
 
-  addCart.onclick = function () {
+  addCart.onclick = () => {
     const parseCartCount = parseInt(cartCount.textContent);
     const parseNewCount = parseInt(newCount.value);
     btnAddCart(newCount, product, cartCount, parseCartCount, parseNewCount);
@@ -93,16 +93,16 @@ function creation(product, container, items) {
     }
   };
 
-  btnBoolean.onclick = function () {
+  btnBoolean.onclick = () => {
     btnUpdateBoolean(product, btnBoolean);
   };
 
-  btnDelete.onclick = function () {
+  btnDelete.onclick = () => {
     btnUpdateDelete(newLi, items, product);
   };
-}
+};
 
-function btnUpdateBoolean(product, boolean) {
+const btnUpdateBoolean = (product, boolean) => {
   if (product.favorite === false) {
     product.favorite = true;
   } else {
@@ -114,15 +114,15 @@ function btnUpdateBoolean(product, boolean) {
   } else {
     boolean.textContent = BTN_BOOL_TEXT;
   }
-}
+};
 
-function btnUpdateDelete(li, items, product) {
+const btnUpdateDelete = (li, items, product) => {
   li.remove();
   const itemsIndex = items.indexOf(product);
   items.splice(itemsIndex, 1);
-}
+};
 
-function btnToPlus(theNewCount, product, btnMinus, btnPlus) {
+const btnToPlus = (theNewCount, product, btnMinus, btnPlus) => {
   btnMinus.disabled = false;
 
   const newValue = parseInt(theNewCount.value) + 1;
@@ -131,9 +131,9 @@ function btnToPlus(theNewCount, product, btnMinus, btnPlus) {
   if (theNewCount.value >= product.count) {
     btnPlus.disabled = true;
   }
-}
+};
 
-function btnToMinus(theNewCount, btnMinus, btnPlus) {
+const btnToMinus = (theNewCount, btnMinus, btnPlus) => {
   btnPlus.disabled = false;
 
   const newValue = parseInt(theNewCount.value) - 1;
@@ -142,15 +142,15 @@ function btnToMinus(theNewCount, btnMinus, btnPlus) {
   if (theNewCount.value <= 1) {
     btnMinus.disabled = true;
   }
-}
+};
 
-function btnAddCart(
+const btnAddCart = (
   theNewCount,
   product,
   theCartCount,
   cartCountParsed,
   newCountParsed
-) {
+) => {
   if (theNewCount.value <= 0) {
     alert(ALERT_COUNT_TEXT);
   } else if (theNewCount.value > product.count) {
@@ -160,20 +160,26 @@ function btnAddCart(
     product.count = product.count - theNewCount.value;
   }
   theNewCount.value = 1;
-}
+};
 
-function createUl(items, container) {
+const createUl = (items, container) => {
   items.forEach((product) => {
     creation(product, container, items);
   });
-}
+};
 
-function add(product, container, items) {
+const add = (product, container, items) => {
   items.push(product);
   creation(product, container, items);
-}
+};
 
-function onAdd(items, titleOnAdd, descriptionOnAdd, container, toInputCount) {
+const onAdd = (
+  items,
+  titleOnAdd,
+  descriptionOnAdd,
+  container,
+  toInputCount
+) => {
   if (titleOnAdd.value.length === 0) {
     return alert(ALERT_TEXT);
   } else if (descriptionOnAdd.value.length === 0) {
@@ -196,21 +202,21 @@ function onAdd(items, titleOnAdd, descriptionOnAdd, container, toInputCount) {
   titleOnAdd.value = INPUT_VOID_VALUE;
   descriptionOnAdd.value = INPUT_VOID_VALUE;
   toInputCount.value = INPUT_VOID_VALUE;
-}
+};
 
-function enterBtn(event) {
+const enterBtn = (event) => {
   if (event.key === "Enter") {
     button.click();
   }
-}
+};
 
-function init() {
-  button.addEventListener("click", function () {
+const init = () => {
+  button.addEventListener("click", () => {
     onAdd(products, inputTitle, inputDescription, list, inputCount);
   });
 
   document.addEventListener("keydown", enterBtn);
   createUl(products, list);
-}
+};
 
 init();
