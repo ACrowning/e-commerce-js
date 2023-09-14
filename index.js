@@ -172,9 +172,7 @@ const btnAddCart = (
       newCountParsed,
     ];
     // eachCart.textContent = `${product.title}, ${product.description} ${newCountParsed}`;
-    // console.log(`${product.title}, ${product.description} ${newCountParsed}`);
-    console.log(shoppingCartProducts);
-    localStorage.setItem("key1", shoppingCartProducts);
+    localStorage.setItem("cartStorage", JSON.stringify(shoppingCartProducts));
   }
   theNewCount.value = 1;
 };
@@ -244,12 +242,14 @@ const init = () => {
 
   document.addEventListener("keydown", enterBtn);
   createUl(products, list);
-  shoppingCartButton.addEventListener("click", btnAddCart);
-  localStorage.getItem("key1");
-  if (localStorage.getItem("key1")) {
-    console.log();
-  } else {
-  }
+
+  const cartStorageJSON = localStorage.getItem("cartStorage");
+  const local = JSON.parse(cartStorageJSON);
+
+  shoppingCartButton.addEventListener("click", () => {
+    console.log(local);
+  });
+
   // closeCartButton.addEventListener("click", openCart);
   // document.addEventListener("keydown", closeCart);
 };
