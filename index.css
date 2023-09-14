@@ -137,8 +137,3 @@ body {
   display: flex;
   gap: 50px;
 }
-
-.cartInContainer,
-.count {
-  flex-shrink: 0;
-}
