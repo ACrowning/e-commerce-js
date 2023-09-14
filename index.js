@@ -19,6 +19,11 @@ const inputTitle = document.querySelector("#title");
 const inputDescription = document.querySelector("#description");
 const inputCount = document.querySelector("#count");
 const cartCount = document.querySelector(".cartCount");
+const shoppingCart = document.querySelector("#shopping-cart");
+const shoppingCartButton = document.getElementById("toggleButton");
+const cartButton = document.getElementById("closeCart");
+const containerOverlayCount = document.querySelector(".count");
+const cartInContainer = document.querySelector(".cartInContainer");
 
 const creation = (product, container, items) => {
   const newLi = document.createElement("li");
@@ -151,6 +156,11 @@ const btnAddCart = (
   cartCountParsed,
   newCountParsed
 ) => {
+  const eachCart = document.createElement("div");
+  const eachCount = document.createElement("div");
+  cartInContainer.appendChild(eachCart);
+  containerOverlayCount.appendChild(eachCount);
+
   if (theNewCount.value <= 0) {
     alert(ALERT_COUNT_TEXT);
   } else if (theNewCount.value > product.count) {
@@ -158,6 +168,8 @@ const btnAddCart = (
   } else {
     theCartCount.textContent = cartCountParsed + newCountParsed;
     product.count = product.count - theNewCount.value;
+    eachCount.textContent = newCountParsed;
+    eachCart.textContent = `${product.title}, ${product.description}`;
   }
   theNewCount.value = 1;
 };
@@ -210,6 +222,16 @@ const enterBtn = (event) => {
   }
 };
 
+const openCart = () => {
+  shoppingCart.classList.toggle("visible");
+};
+
+const closeCart = (event) => {
+  if (event.key === "Escape") {
+    shoppingCart.classList.toggle("visible").remove();
+  }
+};
+
 const init = () => {
   button.addEventListener("click", () => {
     onAdd(products, inputTitle, inputDescription, list, inputCount);
@@ -217,6 +239,9 @@ const init = () => {
 
   document.addEventListener("keydown", enterBtn);
   createUl(products, list);
+  shoppingCartButton.addEventListener("click", openCart);
+  cartButton.addEventListener("click", openCart);
+  document.addEventListener("keydown", closeCart);
 };
 
 init();
