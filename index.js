@@ -24,6 +24,7 @@ const shoppingCartButton = document.getElementById("toggleButton");
 const closeCartButton = document.getElementById("closeCart");
 const containerOverlayCount = document.querySelector(".count");
 const cartInContainer = document.querySelector(".cartInContainer");
+const shoppingCartProducts = JSON.parse(localStorage.getItem("cartStorage"));
 
 const creation = (product, container, items) => {
   const newLi = document.createElement("li");
@@ -166,11 +167,8 @@ const btnAddCart = (
   } else {
     theCartCount.textContent = cartCountParsed + newCountParsed;
     product.count = product.count - theNewCount.value;
-    const shoppingCartProducts = [
-      product.title,
-      product.description,
-      newCountParsed,
-    ];
+    const cartProduct = `${product.title}, ${product.description} ${newCountParsed}`;
+    shoppingCartProducts.push(cartProduct);
     // eachCart.textContent = `${product.title}, ${product.description} ${newCountParsed}`;
     localStorage.setItem("cartStorage", JSON.stringify(shoppingCartProducts));
   }
@@ -236,20 +234,16 @@ const enterBtn = (event) => {
 // };
 
 const init = () => {
+  shoppingCartButton.addEventListener("click", () => {
+    console.log(shoppingCartProducts);
+  });
+
   button.addEventListener("click", () => {
     onAdd(products, inputTitle, inputDescription, list, inputCount);
   });
 
   document.addEventListener("keydown", enterBtn);
   createUl(products, list);
-
-  const cartStorageJSON = localStorage.getItem("cartStorage");
-  const local = JSON.parse(cartStorageJSON);
-
-  shoppingCartButton.addEventListener("click", () => {
-    console.log(local);
-  });
-
   // closeCartButton.addEventListener("click", openCart);
   // document.addEventListener("keydown", closeCart);
 };
