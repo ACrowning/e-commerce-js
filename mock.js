@@ -1,4 +1,4 @@
-const products = [
+export const products = [
   {
     id: 1,
     title: "title1",
@@ -22,4 +22,26 @@ const products = [
   },
 ];
 
-export default products;
+export const storedProducts = [
+  {
+    id: 111,
+    title: "t1",
+    description: "d1",
+    favorite: false,
+    count: 1,
+  },
+  {
+    id: 222,
+    title: "t2",
+    description: "d2",
+    favorite: false,
+    count: 1,
+  },
+  {
+    id: 333,
+    title: "t3",
+    description: "d3",
+    favorite: false,
+    count: 1,
+  },
+];

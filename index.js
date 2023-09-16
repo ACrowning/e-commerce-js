@@ -1,4 +1,4 @@
-import products from "./mock.js";
+import { products, storedProducts } from "./mock.js";
 import {
   IMG_URL,
   BTN_BOOL_TEXT,
@@ -24,9 +24,8 @@ const shoppingCartButton = document.getElementById("toggleButton");
 const closeCartButton = document.getElementById("closeCart");
 const containerOverlayCount = document.querySelector(".count");
 const cartInContainer = document.querySelector(".cartInContainer");
-const shoppingCartProducts = JSON.parse(localStorage.getItem("cartStorage"));
 
-const creation = (product, container, items) => {
+const creation = (product, container, items, productsOfCart) => {
   const newLi = document.createElement("li");
   newLi.className = "product";
   const overlay = document.createElement("div");
@@ -92,7 +91,14 @@ const creation = (product, container, items) => {
   addCart.onclick = () => {
     const parseCartCount = parseInt(cartCount.textContent);
     const parseNewCount = parseInt(newCount.value);
-    btnAddCart(newCount, product, cartCount, parseCartCount, parseNewCount);
+    btnAddCart(
+      newCount,
+      product,
+      cartCount,
+      parseCartCount,
+      parseNewCount,
+      productsOfCart
+    );
     if (product.count === 0) {
       addCart.disabled = true;
       plus.disabled = true;
@@ -155,7 +161,8 @@ const btnAddCart = (
   product,
   theCartCount,
   cartCountParsed,
-  newCountParsed
+  newCountParsed,
+  productsOfCart
 ) => {
   // const eachCart = document.createElement("div");
   // cartInContainer.appendChild(eachCart);
@@ -168,9 +175,9 @@ const btnAddCart = (
     theCartCount.textContent = cartCountParsed + newCountParsed;
     product.count = product.count - theNewCount.value;
     const cartProduct = `${product.title}, ${product.description} ${newCountParsed}`;
-    shoppingCartProducts.push(cartProduct);
+    // productsOfCart.push(cartProduct);
     // eachCart.textContent = `${product.title}, ${product.description} ${newCountParsed}`;
-    localStorage.setItem("cartStorage", JSON.stringify(shoppingCartProducts));
+    localStorage.setItem("cartStorage", JSON.stringify(productsOfCart));
   }
   theNewCount.value = 1;
 };
@@ -181,9 +188,9 @@ const createUl = (items, container) => {
   });
 };
 
-const add = (product, container, items) => {
+const add = (product, container, items, productsOfCart) => {
   items.push(product);
-  creation(product, container, items);
+  creation(product, container, items, productsOfCart);
 };
 
 const onAdd = (
@@ -191,7 +198,8 @@ const onAdd = (
   titleOnAdd,
   descriptionOnAdd,
   container,
-  toInputCount
+  toInputCount,
+  productsOfCart
 ) => {
   if (titleOnAdd.value.length === 0) {
     return alert(ALERT_TEXT);
@@ -210,7 +218,7 @@ const onAdd = (
     count: Number(toInputCount.value),
   };
 
-  add(newProduct, container, items);
+  add(newProduct, container, items, productsOfCart);
 
   titleOnAdd.value = INPUT_VOID_VALUE;
   descriptionOnAdd.value = INPUT_VOID_VALUE;
@@ -233,13 +241,28 @@ const enterBtn = (event) => {
 //   }
 // };
 
+const initCart = () => {
+  cartCount.textContent = storedProducts.length;
+};
+
 const init = () => {
-  shoppingCartButton.addEventListener("click", () => {
-    console.log(shoppingCartProducts);
-  });
+  initCart();
+
+  // const storedProducts1 = JSON.parse(localStorage.getItem("cartStorage"));
+  // const shoppingCartProducts = storedProducts1 ?? [];
+  // shoppingCartButton.addEventListener("click", () => {
+  //   console.log(shoppingCartProducts);
+  // });
 
   button.addEventListener("click", () => {
-    onAdd(products, inputTitle, inputDescription, list, inputCount);
+    onAdd(
+      products,
+      inputTitle,
+      inputDescription,
+      list,
+      inputCount,
+      shoppingCartProducts
+    );
   });
 
   document.addEventListener("keydown", enterBtn);
