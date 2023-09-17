@@ -182,9 +182,9 @@ const createUl = (items, container, storedOfProducts) => {
   });
 };
 
-const add = (product, container, items) => {
+const add = (product, container, items, storedOfProducts) => {
   items.push(product);
-  creation(product, container, items);
+  creation(product, container, items, storedOfProducts);
 };
 
 const onAdd = (
@@ -192,7 +192,8 @@ const onAdd = (
   titleOnAdd,
   descriptionOnAdd,
   container,
-  toInputCount
+  toInputCount,
+  storedOfProducts
 ) => {
   if (titleOnAdd.value.length === 0) {
     return alert(ALERT_TEXT);
@@ -211,7 +212,7 @@ const onAdd = (
     count: Number(toInputCount.value),
   };
 
-  add(newProduct, container, items);
+  add(newProduct, container, items, storedOfProducts);
 
   titleOnAdd.value = INPUT_VOID_VALUE;
   descriptionOnAdd.value = INPUT_VOID_VALUE;
@@ -235,7 +236,14 @@ const init = () => {
   });
 
   button.addEventListener("click", () => {
-    onAdd(products, inputTitle, inputDescription, list, inputCount);
+    onAdd(
+      products,
+      inputTitle,
+      inputDescription,
+      list,
+      inputCount,
+      storedProducts
+    );
   });
 
   document.addEventListener("keydown", enterBtn);
