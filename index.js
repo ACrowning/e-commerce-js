@@ -172,6 +172,7 @@ const btnAddCart = (
     theCartCount.textContent = cartCountParsed + newCountParsed;
     product.count = product.count - theNewCount.value;
     storedOfProducts.push(product);
+    localStorage.setItem("cartStorage", JSON.stringify(storedOfProducts));
   }
   theNewCount.value = 1;
 };
@@ -233,6 +234,7 @@ const init = () => {
   initCart();
   shoppingCartButton.addEventListener("click", () => {
     console.log(storedProducts);
+    console.log(JSON.parse(localStorage.getItem("cartStorage")));
   });
 
   button.addEventListener("click", () => {
