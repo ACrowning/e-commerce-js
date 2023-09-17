@@ -1,4 +1,4 @@
-import { products, storedProducts } from "./mock.js";
+import products from "./mock.js";
 import {
   IMG_URL,
   BTN_BOOL_TEXT,
@@ -226,15 +226,17 @@ const enterBtn = (event) => {
   }
 };
 
-const initCart = () => {
-  cartCount.textContent = storedProducts.length;
+const initCart = (storedOfProducts) => {
+  cartCount.textContent = storedOfProducts.length;
 };
 
 const init = () => {
-  initCart();
+  const storedProducts = JSON.parse(localStorage.getItem("cartStorage")) ?? [];
+
+  initCart(storedProducts);
+
   shoppingCartButton.addEventListener("click", () => {
     console.log(storedProducts);
-    console.log(JSON.parse(localStorage.getItem("cartStorage")));
   });
 
   button.addEventListener("click", () => {
