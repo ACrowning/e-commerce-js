@@ -19,13 +19,9 @@ const inputTitle = document.querySelector("#title");
 const inputDescription = document.querySelector("#description");
 const inputCount = document.querySelector("#count");
 const cartCount = document.querySelector(".cartCount");
-const shoppingCart = document.querySelector("#shopping-cart");
 const shoppingCartButton = document.getElementById("toggleButton");
-const closeCartButton = document.getElementById("closeCart");
-const containerOverlayCount = document.querySelector(".count");
-const cartInContainer = document.querySelector(".cartInContainer");
 
-const creation = (product, container, items, storedOfProducts) => {
+const creation = ({ product, container, products, storedProducts }) => {
   const newLi = document.createElement("li");
   newLi.className = "product";
   const overlay = document.createElement("div");
@@ -78,27 +74,27 @@ const creation = (product, container, items, storedOfProducts) => {
     plus.disabled = true;
   }
   plus.onclick = () => {
-    btnToPlus(newCount, product, minus, plus);
+    btnToPlus({ newCount, product, minus, plus });
   };
 
   if (newCount.value <= 1) {
     minus.disabled = true;
   }
   minus.onclick = () => {
-    btnToMinus(newCount, minus, plus);
+    btnToMinus({ newCount, minus, plus });
   };
 
   addCart.onclick = () => {
     const parseCartCount = parseInt(cartCount.textContent);
     const parseNewCount = parseInt(newCount.value);
-    btnAddCart(
+    btnAddCart({
       newCount,
       product,
       cartCount,
       parseCartCount,
       parseNewCount,
-      storedOfProducts
-    );
+      storedProducts,
+    });
     if (product.count === 0) {
       addCart.disabled = true;
       plus.disabled = true;
@@ -106,15 +102,15 @@ const creation = (product, container, items, storedOfProducts) => {
   };
 
   btnBoolean.onclick = () => {
-    btnUpdateBoolean(product, btnBoolean);
+    btnUpdateBoolean({ product, btnBoolean });
   };
 
   btnDelete.onclick = () => {
-    btnUpdateDelete(newLi, items, product);
+    btnUpdateDelete({ newLi, products, product });
   };
 };
 
-const btnUpdateBoolean = (product, boolean) => {
+const btnUpdateBoolean = ({ product, btnBoolean }) => {
   if (product.favorite === false) {
     product.favorite = true;
   } else {
@@ -122,102 +118,107 @@ const btnUpdateBoolean = (product, boolean) => {
   }
 
   if (product.favorite === true) {
-    boolean.textContent = BOOL_TEXT;
+    btnBoolean.textContent = BOOL_TEXT;
   } else {
-    boolean.textContent = BTN_BOOL_TEXT;
+    btnBoolean.textContent = BTN_BOOL_TEXT;
   }
 };
 
-const btnUpdateDelete = (li, items, product) => {
-  li.remove();
-  const itemsIndex = items.indexOf(product);
-  items.splice(itemsIndex, 1);
+const btnUpdateDelete = ({ newLi, products, product }) => {
+  newLi.remove();
+  const itemsIndex = products.indexOf(product);
+  products.splice(itemsIndex, 1);
 };
 
-const btnToPlus = (theNewCount, product, btnMinus, btnPlus) => {
-  btnMinus.disabled = false;
+const btnToPlus = ({ newCount, product, minus, plus }) => {
+  minus.disabled = false;
 
-  const newValue = parseInt(theNewCount.value) + 1;
-  theNewCount.value = newValue;
+  const newValue = parseInt(newCount.value) + 1;
+  newCount.value = newValue;
 
-  if (theNewCount.value >= product.count) {
-    btnPlus.disabled = true;
+  if (newCount.value >= product.count) {
+    plus.disabled = true;
   }
 };
 
-const btnToMinus = (theNewCount, btnMinus, btnPlus) => {
-  btnPlus.disabled = false;
+const btnToMinus = ({ newCount, minus, plus }) => {
+  plus.disabled = false;
 
-  const newValue = parseInt(theNewCount.value) - 1;
-  theNewCount.value = newValue;
+  const newValue = parseInt(newCount.value) - 1;
+  newCount.value = newValue;
 
-  if (theNewCount.value <= 1) {
-    btnMinus.disabled = true;
+  if (newCount.value <= 1) {
+    minus.disabled = true;
   }
 };
 
-const btnAddCart = (
-  theNewCount,
+const btnAddCart = ({
+  newCount,
   product,
-  theCartCount,
-  cartCountParsed,
-  newCountParsed,
-  storedOfProducts
-) => {
-  if (theNewCount.value <= 0) {
+  cartCount,
+  parseCartCount,
+  parseNewCount,
+  storedProducts,
+}) => {
+  if (newCount.value <= 0) {
     alert(ALERT_COUNT_TEXT);
-  } else if (theNewCount.value > product.count) {
+  } else if (newCount.value > product.count) {
     alert(ALERT_COUNT_TEXT);
   } else {
-    theCartCount.textContent = cartCountParsed + newCountParsed;
-    product.count = product.count - theNewCount.value;
-    storedOfProducts.push(product);
-    localStorage.setItem("cartStorage", JSON.stringify(storedOfProducts));
+    cartCount.textContent = parseCartCount + parseNewCount;
+    product.count = product.count - newCount.value;
+    for (let index = 0; index < parseNewCount; index++) {
+      storedProducts.push(product);
+    }
+
+    localStorage.setItem("cartStorage", JSON.stringify(storedProducts));
   }
-  theNewCount.value = 1;
+
+  newCount.value = 1;
 };
 
-const createUl = (items, container, storedOfProducts) => {
-  items.forEach((product) => {
-    creation(product, container, items, storedOfProducts);
+const createUl = ({ products, container, storedProducts }) => {
+  products.forEach((product) => {
+    creation({ product, container, products, storedProducts });
   });
 };
 
-const add = (product, container, items, storedOfProducts) => {
-  items.push(product);
-  creation(product, container, items, storedOfProducts);
+const add = ({ product, container, products, storedProducts }) => {
+  products.push(product);
+  creation({ product, container, products, storedProducts });
+  console.log(products);
 };
 
-const onAdd = (
-  items,
-  titleOnAdd,
-  descriptionOnAdd,
+const onAdd = ({
+  products,
+  inputTitle,
+  inputDescription,
   container,
-  toInputCount,
-  storedOfProducts
-) => {
-  if (titleOnAdd.value.length === 0) {
+  inputCount,
+  storedProducts,
+}) => {
+  if (inputTitle.value.length === 0) {
     return alert(ALERT_TEXT);
-  } else if (descriptionOnAdd.value.length === 0) {
-    descriptionOnAdd.value = INPUT_MINUS_VALUE;
+  } else if (inputDescription.value.length === 0) {
+    inputDescription.value = INPUT_MINUS_VALUE;
   }
-  if (Number(toInputCount.value) <= 0) {
+  if (Number(inputCount.value) <= 0) {
     return alert(ALERT_COUNT_TEXT);
   }
 
   const newProduct = {
-    id: `${items.length + 1}`,
-    title: `${titleOnAdd.value}`,
-    description: `${descriptionOnAdd.value}`,
+    id: `${products.length + 1}`,
+    title: `${inputTitle.value}`,
+    description: `${inputDescription.value}`,
     favorite: false,
-    count: Number(toInputCount.value),
+    count: Number(inputCount.value),
   };
 
-  add(newProduct, container, items, storedOfProducts);
+  add({ product: newProduct, container, products, storedProducts });
 
-  titleOnAdd.value = INPUT_VOID_VALUE;
-  descriptionOnAdd.value = INPUT_VOID_VALUE;
-  toInputCount.value = INPUT_VOID_VALUE;
+  inputTitle.value = INPUT_VOID_VALUE;
+  inputDescription.value = INPUT_VOID_VALUE;
+  inputCount.value = INPUT_VOID_VALUE;
 };
 
 const enterBtn = (event) => {
@@ -226,32 +227,32 @@ const enterBtn = (event) => {
   }
 };
 
-const initCart = (storedOfProducts) => {
-  cartCount.textContent = storedOfProducts.length;
+const initCart = ({ cartCount, storedProducts }) => {
+  cartCount.textContent = storedProducts.length;
 };
 
 const init = () => {
   const storedProducts = JSON.parse(localStorage.getItem("cartStorage")) ?? [];
 
-  initCart(storedProducts);
+  initCart({ cartCount, storedProducts });
 
   shoppingCartButton.addEventListener("click", () => {
-    console.log(storedProducts);
+    console.log("local", storedProducts);
   });
 
   button.addEventListener("click", () => {
-    onAdd(
+    onAdd({
       products,
       inputTitle,
       inputDescription,
-      list,
+      container: list,
       inputCount,
-      storedProducts
-    );
+      storedProducts,
+    });
   });
 
   document.addEventListener("keydown", enterBtn);
-  createUl(products, list, storedProducts);
+  createUl({ products, container: list, storedProducts });
 };
 
 init();
