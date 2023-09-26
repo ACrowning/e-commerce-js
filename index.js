@@ -181,6 +181,8 @@ const btnAddCart = ({
 };
 
 const createUl = ({ products, container, storedProducts }) => {
+  const result = document.getElementById("list");
+  result.innerHTML = "";
   products.forEach((product) => {
     creation({ product, container, products, storedProducts });
   });
@@ -226,12 +228,20 @@ const onAdd = ({
   inputCount.value = INPUT_VOID_VALUE;
 };
 
-const sortAscending = () => {
-  products.sort((b, a) => b.price - a.price);
+const sortDescending = () => {
+  const sortedArray = [...products];
+  sortedArray.sort(
+    (productLow, productHigh) => productHigh.price - productLow.price
+  );
+  createUl({ products: sortedArray, container: list, storedProducts: [] });
 };
 
-const sortDescending = () => {
-  products.sort((a, b) => b.price - a.price);
+const sortAscending = () => {
+  const sortedArray = [...products];
+  sortedArray.sort(
+    (productLow, productHigh) => productLow.price - productHigh.price
+  );
+  createUl({ products: sortedArray, container: list, storedProducts: [] });
 };
 
 const enterBtn = (event) => {
