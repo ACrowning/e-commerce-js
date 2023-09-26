@@ -17,9 +17,12 @@ const button = document.querySelector("#addButton");
 const list = document.querySelector("#list");
 const inputTitle = document.querySelector("#title");
 const inputDescription = document.querySelector("#description");
+const inputPrice = document.querySelector("#price");
 const inputCount = document.querySelector("#count");
 const cartCount = document.querySelector(".cartCount");
 const shoppingCartButton = document.getElementById("toggleButton");
+const btnAscending = document.getElementById("ascending");
+const btnDescending = document.getElementById("descending");
 
 const creation = ({ product, container, products, storedProducts }) => {
   const newLi = document.createElement("li");
@@ -48,7 +51,7 @@ const creation = ({ product, container, products, storedProducts }) => {
   newCount.value = 0;
   newCount.style.width = `${65}px`;
 
-  underLi.textContent = `${product.title}, ${product.description}`;
+  underLi.textContent = `${product.title}, ${product.description}, ${product.price}`;
 
   btnBoolean.textContent = BTN_BOOL_TEXT;
   btnDelete.textContent = BTN_DELETE_TEXT;
@@ -178,6 +181,8 @@ const btnAddCart = ({
 };
 
 const createUl = ({ products, container, storedProducts }) => {
+  const result = document.getElementById("list");
+  result.innerHTML = "";
   products.forEach((product) => {
     creation({ product, container, products, storedProducts });
   });
@@ -186,13 +191,13 @@ const createUl = ({ products, container, storedProducts }) => {
 const add = ({ product, container, products, storedProducts }) => {
   products.push(product);
   creation({ product, container, products, storedProducts });
-  console.log(products);
 };
 
 const onAdd = ({
   products,
   inputTitle,
   inputDescription,
+  inputPrice,
   container,
   inputCount,
   storedProducts,
@@ -202,7 +207,7 @@ const onAdd = ({
   } else if (inputDescription.value.length === 0) {
     inputDescription.value = INPUT_MINUS_VALUE;
   }
-  if (Number(inputCount.value) <= 0) {
+  if (parseInt(inputCount.value) <= 0) {
     return alert(ALERT_COUNT_TEXT);
   }
 
@@ -210,15 +215,41 @@ const onAdd = ({
     id: `${products.length + 1}`,
     title: `${inputTitle.value}`,
     description: `${inputDescription.value}`,
+    price: parseInt(inputPrice.value),
     favorite: false,
-    count: Number(inputCount.value),
+    count: parseInt(inputCount.value),
   };
 
   add({ product: newProduct, container, products, storedProducts });
 
   inputTitle.value = INPUT_VOID_VALUE;
   inputDescription.value = INPUT_VOID_VALUE;
+  inputPrice.value = INPUT_VOID_VALUE;
   inputCount.value = INPUT_VOID_VALUE;
+};
+
+const sortDescending = ({ storedProducts }) => {
+  const sortedArray = [...products];
+  sortedArray.sort(
+    (productLow, productHigh) => productHigh.price - productLow.price
+  );
+  createUl({
+    products: sortedArray,
+    container: list,
+    storedProducts,
+  });
+};
+
+const sortAscending = ({ storedProducts }) => {
+  const sortedArray = [...products];
+  sortedArray.sort(
+    (productLow, productHigh) => productLow.price - productHigh.price
+  );
+  createUl({
+    products: sortedArray,
+    container: list,
+    storedProducts,
+  });
 };
 
 const enterBtn = (event) => {
@@ -245,6 +276,7 @@ const init = () => {
       products,
       inputTitle,
       inputDescription,
+      inputPrice,
       container: list,
       inputCount,
       storedProducts,
@@ -253,6 +285,14 @@ const init = () => {
 
   document.addEventListener("keydown", enterBtn);
   createUl({ products, container: list, storedProducts });
+
+  btnAscending.addEventListener("click", () => {
+    sortAscending({ storedProducts });
+  });
+
+  btnDescending.addEventListener("click", () => {
+    sortDescending({ storedProducts });
+  });
 };
 
 init();
