@@ -228,20 +228,28 @@ const onAdd = ({
   inputCount.value = INPUT_VOID_VALUE;
 };
 
-const sortDescending = () => {
+const sortDescending = ({ storedProducts }) => {
   const sortedArray = [...products];
   sortedArray.sort(
     (productLow, productHigh) => productHigh.price - productLow.price
   );
-  createUl({ products: sortedArray, container: list, storedProducts: [] });
+  createUl({
+    products: sortedArray,
+    container: list,
+    storedProducts,
+  });
 };
 
-const sortAscending = () => {
+const sortAscending = ({ storedProducts }) => {
   const sortedArray = [...products];
   sortedArray.sort(
     (productLow, productHigh) => productLow.price - productHigh.price
   );
-  createUl({ products: sortedArray, container: list, storedProducts: [] });
+  createUl({
+    products: sortedArray,
+    container: list,
+    storedProducts,
+  });
 };
 
 const enterBtn = (event) => {
@@ -279,11 +287,11 @@ const init = () => {
   createUl({ products, container: list, storedProducts });
 
   btnAscending.addEventListener("click", () => {
-    sortAscending();
+    sortAscending({ storedProducts });
   });
 
   btnDescending.addEventListener("click", () => {
-    sortDescending();
+    sortDescending({ storedProducts });
   });
 };
 
