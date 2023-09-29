@@ -23,6 +23,7 @@ const cartCount = document.querySelector(".cartCount");
 const shoppingCartButton = document.getElementById("toggleButton");
 const btnAscending = document.getElementById("ascending");
 const btnDescending = document.getElementById("descending");
+const filter = document.querySelector("#filter");
 
 const creation = ({ product, container, products, storedProducts }) => {
   const newLi = document.createElement("li");
@@ -252,6 +253,20 @@ const sortAscending = ({ storedProducts }) => {
   });
 };
 
+const findTitle = ({ storedProducts }) => {
+  const result = document.getElementById("list");
+  const copyArray = [...products];
+  const filteredArray = copyArray.filter((product) => {
+    return product.title.toLowerCase().includes(filter.value.toLowerCase());
+  });
+  result.innerHTML = "";
+  createUl({
+    products: filteredArray,
+    container: list,
+    storedProducts,
+  });
+};
+
 const enterBtn = (event) => {
   if (event.key === "Enter") {
     button.click();
@@ -293,6 +308,8 @@ const init = () => {
   btnDescending.addEventListener("click", () => {
     sortDescending({ storedProducts });
   });
+
+  filter.oninput = () => findTitle({ storedProducts });
 };
 
 init();
