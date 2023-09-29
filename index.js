@@ -24,7 +24,6 @@ const shoppingCartButton = document.getElementById("toggleButton");
 const btnAscending = document.getElementById("ascending");
 const btnDescending = document.getElementById("descending");
 const filter = document.querySelector("#filter");
-const btnFindTitle = document.querySelector("#filterButton");
 
 const creation = ({ product, container, products, storedProducts }) => {
   const newLi = document.createElement("li");
@@ -256,18 +255,16 @@ const sortAscending = ({ storedProducts }) => {
 
 const findTitle = ({ storedProducts }) => {
   const result = document.getElementById("list");
-
-  const filteredArray = [...products];
-  filteredArray.filter((product) => {
-    if (filter.value === product.title) {
-      result.innerHTML = "";
-      creation({ product, container: list, products, storedProducts });
-    } else if (filter.value === "") {
-      history.back();
-    }
+  const copyArray = [...products];
+  const filteredArray = copyArray.filter((product) => {
+    return product.title.toLowerCase().includes(filter.value.toLowerCase());
   });
-
-  filter.value = INPUT_VOID_VALUE;
+  result.innerHTML = "";
+  createUl({
+    products: filteredArray,
+    container: list,
+    storedProducts,
+  });
 };
 
 const enterBtn = (event) => {
@@ -312,9 +309,7 @@ const init = () => {
     sortDescending({ storedProducts });
   });
 
-  btnFindTitle.addEventListener("click", () => {
-    findTitle({ storedProducts });
-  });
+  filter.oninput = () => findTitle({ storedProducts });
 };
 
 init();
