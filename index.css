@@ -98,3 +98,11 @@ body {
   justify-content: space-between;
   opacity: 0.6;
 }
+
+.comments {
+  position: fixed;
+  width: 45vw;
+  height: 50vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

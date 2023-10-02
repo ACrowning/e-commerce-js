@@ -24,6 +24,24 @@ const shoppingCartButton = document.getElementById("toggleButton");
 const btnAscending = document.getElementById("ascending");
 const btnDescending = document.getElementById("descending");
 const filter = document.querySelector("#filter");
+const comments = document.querySelector(".comments");
+
+const comment = [
+  {
+    userName: "string",
+    comment: "string",
+  },
+];
+for (const element of comment) {
+  const commentBox = document.createElement("div");
+  const commentItem1 = document.createElement("strong");
+  const commentItem2 = document.createElement("p");
+  commentItem1.textContent = element.userName;
+  commentItem2.textContent = element.comment;
+  commentBox.appendChild(commentItem1);
+  commentBox.appendChild(commentItem2);
+  comments.appendChild(commentBox);
+}
 
 const creation = ({ product, container, products, storedProducts }) => {
   const newLi = document.createElement("li");
