@@ -1,4 +1,4 @@
-const products = [
+export const products = [
   {
     id: 1,
     title: "title1",
@@ -25,4 +25,21 @@ const products = [
   },
 ];
 
-export default products;
+export const commentsArray = [
+  {
+    userName: "user1",
+    comment: "cool product",
+    comments: [
+      {
+        userName: "user2",
+        comment: "yes, this product is awesome",
+        comments: [],
+      },
+    ],
+  },
+  {
+    userName: "user3",
+    comment: "hello!",
+    comments: [],
+  },
+];

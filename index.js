@@ -1,4 +1,4 @@
-import products from "./mock.js";
+import { products, commentsArray } from "./mock.js";
 import {
   IMG_URL,
   BTN_BOOL_TEXT,
@@ -25,25 +25,6 @@ const btnAscending = document.getElementById("ascending");
 const btnDescending = document.getElementById("descending");
 const filter = document.querySelector("#filter");
 const comments = document.querySelector(".comments");
-
-const commentsArray = [
-  {
-    userName: "user1",
-    comment: "cool product",
-    comments: [
-      {
-        userName: "user2",
-        comment: "yes, this product is awesome",
-        comments: [],
-      },
-    ],
-  },
-  {
-    userName: "user3",
-    comment: "hello!",
-    comments: [],
-  },
-];
 
 const creation = ({ product, container, products, storedProducts }) => {
   const newLi = document.createElement("li");
@@ -287,13 +268,13 @@ const findTitle = ({ storedProducts }) => {
   });
 };
 
-const comment = () => {
-  for (const element of commentsArray) {
+const initComments = ({ commentsArray, comments }) => {
+  for (const commentsElement of commentsArray) {
     const commentBox = document.createElement("div");
     const commentItem1 = document.createElement("strong");
     const commentItem2 = document.createElement("p");
-    commentItem1.textContent = element.userName;
-    commentItem2.textContent = element.comment;
+    commentItem1.textContent = commentsElement.userName;
+    commentItem2.textContent = commentsElement.comment;
     commentBox.appendChild(commentItem1);
     commentBox.appendChild(commentItem2);
     comments.appendChild(commentBox);
@@ -344,7 +325,7 @@ const init = () => {
 
   filter.oninput = () => findTitle({ storedProducts });
 
-  comment();
+  initComments({ commentsArray, comments });
 };
 
 init();
