@@ -26,22 +26,24 @@ const btnDescending = document.getElementById("descending");
 const filter = document.querySelector("#filter");
 const comments = document.querySelector(".comments");
 
-const comment = [
+const commentsArray = [
   {
-    userName: "string",
-    comment: "string",
+    userName: "user1",
+    comment: "cool product",
+    comments: [
+      {
+        userName: "user2",
+        comment: "yes, this product is awesome",
+        comments: [],
+      },
+    ],
+  },
+  {
+    userName: "user3",
+    comment: "hello!",
+    comments: [],
   },
 ];
-for (const element of comment) {
-  const commentBox = document.createElement("div");
-  const commentItem1 = document.createElement("strong");
-  const commentItem2 = document.createElement("p");
-  commentItem1.textContent = element.userName;
-  commentItem2.textContent = element.comment;
-  commentBox.appendChild(commentItem1);
-  commentBox.appendChild(commentItem2);
-  comments.appendChild(commentBox);
-}
 
 const creation = ({ product, container, products, storedProducts }) => {
   const newLi = document.createElement("li");
@@ -285,6 +287,19 @@ const findTitle = ({ storedProducts }) => {
   });
 };
 
+const comment = () => {
+  for (const element of commentsArray) {
+    const commentBox = document.createElement("div");
+    const commentItem1 = document.createElement("strong");
+    const commentItem2 = document.createElement("p");
+    commentItem1.textContent = element.userName;
+    commentItem2.textContent = element.comment;
+    commentBox.appendChild(commentItem1);
+    commentBox.appendChild(commentItem2);
+    comments.appendChild(commentBox);
+  }
+};
+
 const enterBtn = (event) => {
   if (event.key === "Enter") {
     button.click();
@@ -328,6 +343,8 @@ const init = () => {
   });
 
   filter.oninput = () => findTitle({ storedProducts });
+
+  comment();
 };
 
 init();
