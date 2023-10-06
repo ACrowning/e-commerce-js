@@ -271,6 +271,7 @@ const findTitle = ({ storedProducts }) => {
 const initComments = ({ commentsArray, commentsDiv }) => {
   for (const commentsElement of commentsArray) {
     const commentBox = document.createElement("div");
+    commentBox.className = "commentBox";
     const commentItem1 = document.createElement("strong");
     const commentItem2 = document.createElement("p");
     commentItem1.textContent = commentsElement.userName;
