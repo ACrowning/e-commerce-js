@@ -24,7 +24,7 @@ const shoppingCartButton = document.getElementById("toggleButton");
 const btnAscending = document.getElementById("ascending");
 const btnDescending = document.getElementById("descending");
 const filter = document.querySelector("#filter");
-const comments = document.querySelector(".comments");
+const commentsDiv = document.querySelector(".comments");
 
 const creation = ({ product, container, products, storedProducts }) => {
   const newLi = document.createElement("li");
@@ -268,7 +268,7 @@ const findTitle = ({ storedProducts }) => {
   });
 };
 
-const initComments = ({ commentsArray, comments }) => {
+const initComments = ({ commentsArray, commentsDiv }) => {
   for (const commentsElement of commentsArray) {
     const commentBox = document.createElement("div");
     const commentItem1 = document.createElement("strong");
@@ -277,7 +277,15 @@ const initComments = ({ commentsArray, comments }) => {
     commentItem2.textContent = commentsElement.comment;
     commentBox.appendChild(commentItem1);
     commentBox.appendChild(commentItem2);
-    comments.appendChild(commentBox);
+    commentsDiv.appendChild(commentBox);
+    if (Array.isArray(commentsElement.comments)) {
+      const commentBox1 = document.createElement("div");
+      commentBox.appendChild(commentBox1);
+      commentsElement.comments.value = initComments({
+        commentsArray: commentsElement.comments,
+        commentsDiv: commentBox1,
+      });
+    }
   }
 };
 
@@ -325,7 +333,7 @@ const init = () => {
 
   filter.oninput = () => findTitle({ storedProducts });
 
-  initComments({ commentsArray, comments });
+  initComments({ commentsArray, commentsDiv });
 };
 
 init();
