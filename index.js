@@ -338,16 +338,24 @@ const init = ({ products, comments }) => {
   initComments({ commentsArray: comments, commentsDiv });
 };
 
-fetch("http://localhost:3000/products")
-  .then((result) => result.json())
-  .then((jsonProducts) => {
-    fetch("http://localhost:3000/comments")
-      .then((result) => result.json())
-      .then((jsonComments) => {
-        const products = jsonProducts.data;
-        const comments = jsonComments.data;
+async function fetchProducts() {
+  const res = await fetch("http://localhost:3000/products");
+  const jsonProducts = await res.json();
+  const products = jsonProducts.data;
 
-        init({ products, comments });
-      })
-      .catch((error) => console.log(error));
-  });
+  init({ products });
+}
+
+async function fetchComments() {
+  const res = await fetch("http://localhost:3000/comments");
+  const jsonComments = await res.json();
+  const comments = jsonComments.data;
+
+  init({ comments });
+}
+
+async function asyncInit() {
+  await fetchProducts();
+  await fetchComments();
+}
+asyncInit();
