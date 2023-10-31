@@ -1,4 +1,3 @@
-import { products, commentsArray } from "./mock.js";
 import {
   IMG_URL,
   BTN_BOOL_TEXT,
@@ -300,7 +299,7 @@ const initCart = ({ cartCount, storedProducts }) => {
   cartCount.textContent = storedProducts.length;
 };
 
-const init = () => {
+const init = ({ products, comments }) => {
   const storedProducts = JSON.parse(localStorage.getItem("cartStorage")) ?? [];
 
   initCart({ cartCount, storedProducts });
@@ -322,6 +321,7 @@ const init = () => {
   });
 
   document.addEventListener("keydown", enterBtn);
+
   createUl({ products, container: list, storedProducts });
 
   btnAscending.addEventListener("click", () => {
@@ -334,7 +334,28 @@ const init = () => {
 
   filter.oninput = () => findTitle({ storedProducts });
 
-  initComments({ commentsArray, commentsDiv });
+  initComments({ commentsArray: comments, commentsDiv });
 };
 
-init();
+async function fetchProducts() {
+  const res = await fetch("http://localhost:3000/products");
+  const jsonProducts = await res.json();
+  const products = jsonProducts.data;
+  return products;
+}
+
+async function fetchComments() {
+  const res = await fetch("http://localhost:3000/comments");
+  const jsonComments = await res.json();
+  const comments = jsonComments.data;
+  return comments;
+}
+
+async function asyncInit() {
+  const products = await fetchProducts();
+  const comments = await fetchComments();
+
+  init({ products, comments });
+}
+
+asyncInit();
