@@ -1,4 +1,3 @@
-// import { products, commentsArray } from "./mock.js";
 import {
   IMG_URL,
   BTN_BOOL_TEXT,
@@ -342,20 +341,21 @@ async function fetchProducts() {
   const res = await fetch("http://localhost:3000/products");
   const jsonProducts = await res.json();
   const products = jsonProducts.data;
-
-  init({ products });
+  return products;
 }
 
 async function fetchComments() {
   const res = await fetch("http://localhost:3000/comments");
   const jsonComments = await res.json();
   const comments = jsonComments.data;
-
-  init({ comments });
+  return comments;
 }
 
 async function asyncInit() {
-  await fetchProducts();
-  await fetchComments();
+  const products = await fetchProducts();
+  const comments = await fetchComments();
+
+  init({ products, comments });
 }
+
 asyncInit();
